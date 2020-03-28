@@ -1,3 +1,39 @@
+/*******Question*******/
+
+/*
+Given a plaintext and key for AES encryption, output the 10 round keys used in the encryption process. Also output the result of the encypted ciphertext after 10 rounds. As the AES has 10 rounds, the size of the plaintext and key both is 128bits. You can find the Substitute byte and round constant tables here
+
+Input:
+(All hexadecimal letters are capital)
+First line will contain a string which is the plaintext. (All hexadecimal letters are capital)
+The line also has a string which is the key. The keys for the next 10 rounds will be generated from this key.
+
+Output:
+Output 10 strings that are the Round Keys of round 1 to 10. Output the ciphertext.
+
+Constraints
+128bit plaintext and key.
+
+Sample Input:
+54776F204F6E65204E696E652054776F
+5468617473206D79204B756E67204675
+
+Sample Output:
+E232FCF191129188B159E4E6D679A293
+56082007C71AB18F76435569A03AF7FA
+D2600DE7157ABC686339E901C3031EFB
+A11202C9B468BEA1D75157A01452495B
+B1293B3305418592D210D232C6429B69
+BD3DC287B87C47156A6C9527AC2E0E4E
+CC96ED1674EAAA031E863F24B2A8316A
+8E51EF21FABB4522E43D7A0656954B6C
+BFE2BF904559FAB2A16480B4F7F1CBD8
+28FDDEF86DA4244ACCC0A4FE3B316F26
+29C3505F571420F6402299B31A02D73A
+*/
+
+/*******Solution*******/
+
 #include <iostream>
 #include<bits/stdc++.h>
 
