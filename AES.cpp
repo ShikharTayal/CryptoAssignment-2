@@ -87,10 +87,6 @@ int binToDec(int n)
     return dec;
 }
 
-
-
-
-
 int main()
 {
 
@@ -175,7 +171,7 @@ int main()
         if(input_pt[i] == 'F')
             bin_pt.append("1111");
     }
-   // cout << bin_key;
+
     int w[44][32];
     int round[11][128];
 
@@ -196,8 +192,6 @@ int main()
         round[0][i+96] = w[3][i];
     }
 
-    /*for(i=0;i<128;i++)
-        cout << round[0][i];*/
    int shift[32];
 
    int roundNum = 0;
@@ -229,9 +223,6 @@ int main()
             int coldec = binToDec(col);
 
             string tempByte = S_Box[rowdec][coldec];
-
-           // cout << tempByte;
-
 
             for(int z = 0; z <2; z++)
             {
@@ -269,11 +260,9 @@ int main()
                     ByteSub.append("1111");
             }
 
-           //  cout << ByteSub;
-
         }
 
-        for(int z = 0 ;z < 32;z++)              // Byte Sub string to bytesub int array
+        for(int z = 0 ;z < 32;z++)              
             ByteSubBin[z] = ByteSub[z] - '0';
 
 
@@ -317,8 +306,6 @@ int main()
                     temp2RC.append("1111");
         }
 
-        //cout << temp2RC;
-
         int addRC[32];
 
         for(int z=0;z<32;z++)
@@ -328,10 +315,6 @@ int main()
 
     for(int z=0;z<32;z++)
         g[z] = ByteSubBin[z] ^ addRC[z];
-
-   /* for(int z=0;z<32;z++)
-        cout << g[z];*/
-
 
     for(int z=0;z<32;z++)
         {
@@ -387,10 +370,6 @@ int main()
 
         }
 
-        /*for(int p=0;p<32;p++)
-            cout << roundKey[z][p];
-
-        cout << endl;*/
     }
 
 
@@ -428,7 +407,6 @@ int main()
 
                 }
 
-               // temp.push_back(' ');
             cnt+=8;
             key[j][i] = temp;
 
@@ -874,10 +852,10 @@ int main()
             string temp ;
             for(int z=0;z<8;z++)
                 {
-                    temp.push_back(round[roundCnt][cnt+z] + '0');    //Change RoundNo KEy HERE --------------------------------------->
+                    temp.push_back(round[roundCnt][cnt+z] + '0');  
 
                 }
-               // temp.push_back(' ');
+               
             cnt+=8;
             key[j][i] = temp;
 
@@ -918,9 +896,7 @@ int main()
     {
         for(int q=0;q<4;q++)
         {
-            int i=0;
-
-            //cout << statemat[q][p][3];
+            int i=0;            
 
             for(i=0;i<8;i+=4)
             {
