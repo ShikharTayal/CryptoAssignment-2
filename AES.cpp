@@ -251,7 +251,7 @@ int main()
     for(int z=0;z<32;z++)
         g[z] = ByteSubBin[z] ^ addRC[z];
 
-    /* Round Key 'roundNum' Calculation after above 3 steps */
+    /* Subsequent Round Keys from previous Round Keys */
     for(int z=0;z<32;z++)
         {
             w[i+4][z] = w[i][z] ^ g[z];
@@ -274,7 +274,7 @@ int main()
 
     }
 
-    /*Round Key Storage from Binary to Hex*/
+    /*Round Key Values from Binary to Hex*/
 
     char roundKey[11][32];
     for(int z=1;z<11;z++)
@@ -334,6 +334,7 @@ int main()
     }
 
     string statemat[4][4];
+	
     /*Round 0 key addition and storing in state matrix */
     for(i=0;i<4;i++)
     {
@@ -358,7 +359,7 @@ int main()
 
 /*------------------ Encryption Starts Here --------------------*/
 
- int roundCnt = 1;
+ int roundCnt = 1;   /*Initialize to Round1*/
  while(roundCnt <11)
  {
     /*Byte Substitution */
@@ -420,7 +421,7 @@ int main()
 
     /*Mix Columns*/
 
-    if(roundCnt!=10)
+    if(roundCnt!=10)   /*No Mix Columns in Round 10 */
         {
         int rowdec[16],coldec[16];
         cnt = 0;
@@ -518,9 +519,6 @@ int main()
             res[3][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
         }
 
-
-
-        //Element 4 to 7
         for(int z=0;z<8;z++)   //Element 4
         {
             t1[z] = m2bin[4][z] - '0';
@@ -561,9 +559,6 @@ int main()
             res[7][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
         }
 
-
-        //Element 8-11
-
         for(int z=0;z<8;z++)   //Element 8
         {
             t1[z] = m2bin[8][z] - '0';
@@ -603,8 +598,6 @@ int main()
 
             res[11][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
         }
-
-        //Element 12-15
 
         for(int z=0;z<8;z++)   //Element 12
         {
@@ -667,7 +660,7 @@ int main()
     }
 
 
-    /*Round KEY Addition*/
+    /*Round Key Addition*/
     cnt = 0;
     for(i=0;i<4;i++)
     {
@@ -723,7 +716,8 @@ int main()
         }
     }
 
-
+/*----------------Result----------------*/
+	
     /* Final Expanded Keys */
     for(int z=1;z<11;z++)
     {
