@@ -3,6 +3,65 @@
 
 using namespace std;
 
+string binToHex(string A,int i)
+{
+        if(A[i] == '0')
+            return ("0000");
+        if(A[i] == '1')
+            return ("0001");
+        if(A[i] == '2')
+            return ("0010");
+        if(A[i] == '3')
+            return ("0011");
+        if(A[i] == '4')
+            return ("0100");
+        if(A[i] == '5')
+            return ("0101");
+        if(A[i] == '6')
+            return ("0110");
+        if(A[i] == '7')
+            return ("0111");
+        if(A[i] == '8')
+            return ("1000");
+        if(A[i] == '9')
+            return ("1001");
+        if(A[i] == 'A')
+            return ("1010");
+        if(A[i] == 'B')
+            return ("1011");
+        if(A[i] == 'C')
+            return ("1100");
+        if(A[i] == 'D')
+            return ("1101");
+        if(A[i] == 'E')
+            return ("1110");
+        if(A[i] == 'F')
+            return ("1111");
+
+}
+
+const char decToHex(int temp)
+{
+    if(temp<=9)
+        return (temp + '0');
+
+
+    else
+    {
+        if(temp == 10)
+            return 'A';
+        if(temp == 11)
+            return 'B';
+        if(temp == 12)
+            return  'C';
+        if(temp == 13)
+            return 'D';
+        if(temp == 14)
+            return 'E';
+        if(temp == 15)
+            return 'F';
+    }
+}
 const char* mul2[16][16] =
 {
 	 "00", "02", "04", "06", "08", "0A", "0C", "0E", "10", "12", "14", "16", "18", "1A", "1C", "1E",
@@ -100,77 +159,13 @@ int main()
 
     int i,j;
 
-    for(i=0;i<32;i++)
-    {
-        if(input_key[i] == '0')
-            bin_key.append("0000");
-        if(input_key[i] == '1')
-            bin_key.append("0001");
-        if(input_key[i] == '2')
-            bin_key.append("0010");
-        if(input_key[i] == '3')
-            bin_key.append("0011");
-        if(input_key[i] == '4')
-            bin_key.append("0100");
-        if(input_key[i] == '5')
-            bin_key.append("0101");
-        if(input_key[i] == '6')
-            bin_key.append("0110");
-        if(input_key[i] == '7')
-            bin_key.append("0111");
-        if(input_key[i] == '8')
-            bin_key.append("1000");
-        if(input_key[i] == '9')
-            bin_key.append("1001");
-        if(input_key[i] == 'A')
-            bin_key.append("1010");
-        if(input_key[i] == 'B')
-            bin_key.append("1011");
-        if(input_key[i] == 'C')
-            bin_key.append("1100");
-        if(input_key[i] == 'D')
-            bin_key.append("1101");
-        if(input_key[i] == 'E')
-            bin_key.append("1110");
-        if(input_key[i] == 'F')
-            bin_key.append("1111");
-    }
+    /* Change input key, input plaintext from hex to binary*/
 
-        for(i=0;i<32;i++)
-    {
-        if(input_pt[i] == '0')
-            bin_pt.append("0000");
-        if(input_pt[i] == '1')
-            bin_pt.append("0001");
-        if(input_pt[i] == '2')
-            bin_pt.append("0010");
-        if(input_pt[i] == '3')
-            bin_pt.append("0011");
-        if(input_pt[i] == '4')
-            bin_pt.append("0100");
-        if(input_pt[i] == '5')
-            bin_pt.append("0101");
-        if(input_pt[i] == '6')
-            bin_pt.append("0110");
-        if(input_pt[i] == '7')
-            bin_pt.append("0111");
-        if(input_pt[i] == '8')
-            bin_pt.append("1000");
-        if(input_pt[i] == '9')
-            bin_pt.append("1001");
-        if(input_pt[i] == 'A')
-            bin_pt.append("1010");
-        if(input_pt[i] == 'B')
-            bin_pt.append("1011");
-        if(input_pt[i] == 'C')
-            bin_pt.append("1100");
-        if(input_pt[i] == 'D')
-            bin_pt.append("1101");
-        if(input_pt[i] == 'E')
-            bin_pt.append("1110");
-        if(input_pt[i] == 'F')
-            bin_pt.append("1111");
-    }
+    for(i=0;i<32;i++)
+        bin_key.append(binToHex(input_key,i));
+
+    for(i=0;i<32;i++)
+        bin_pt.append(binToHex(input_pt,i));
 
     int w[44][32];
     int round[11][128];
@@ -183,7 +178,6 @@ int main()
         w[3][j] = bin_key[j+96] - '0';
     }
 
-
     for(i=0;i<32;i++)
     {
         round[0][i] = w[0][i];
@@ -192,15 +186,19 @@ int main()
         round[0][i+96] = w[3][i];
     }
 
-   int shift[32];
+/*-------------------- KeyExpansion Starts ------------------ */
 
+   int shift[32];
    int roundNum = 0;
+
    for(i=0;i<40;i+=4)
     {
         int num = i+3;
 
+        /*Circular Byte Shift*/
         for(j=0;j<32;j++)
-            shift[j] = w[num][j];           // temp shift array for byte shifting
+            shift[j] = w[num][j];
+
 
         for(j=0;j<8;j++)
         {
@@ -211,6 +209,7 @@ int main()
             shift[31] = temp;
         }
 
+        /*Byte Substitution */
         string ByteSub;
         int ByteSubBin[32];
 
@@ -225,89 +224,23 @@ int main()
             string tempByte = S_Box[rowdec][coldec];
 
             for(int z = 0; z <2; z++)
-            {
-                if(tempByte[z] == '0')
-                    ByteSub.append("0000");
-                if(tempByte[z] == '1')
-                    ByteSub.append("0001");
-                if(tempByte[z] == '2')
-                    ByteSub.append("0010");
-                if(tempByte[z] == '3')
-                    ByteSub.append("0011");
-                if(tempByte[z] == '4')
-                    ByteSub.append("0100");
-                if(tempByte[z] == '5')
-                    ByteSub.append("0101");
-                if(tempByte[z] == '6')
-                    ByteSub.append("0110");
-                if(tempByte[z] == '7')
-                    ByteSub.append("0111");
-                if(tempByte[z] == '8')
-                    ByteSub.append("1000");
-                if(tempByte[z] == '9')
-                    ByteSub.append("1001");
-                if(tempByte[z] == 'A')
-                    ByteSub.append("1010");
-                if(tempByte[z] == 'B')
-                    ByteSub.append("1011");
-                if(tempByte[z] == 'C')
-                    ByteSub.append("1100");
-                if(tempByte[z] == 'D')
-                    ByteSub.append("1101");
-                if(tempByte[z] == 'E')
-                    ByteSub.append("1110");
-                if(tempByte[z] == 'F')
-                    ByteSub.append("1111");
-            }
+                ByteSub.append(binToHex(tempByte,z));
+
 
         }
 
-        for(int z = 0 ;z < 32;z++)              
+        for(int z = 0 ;z < 32;z++)
             ByteSubBin[z] = ByteSub[z] - '0';
 
-
+    /* Round Key Addition*/
     string tempRC = Rcon[roundNum];
-
     string temp2RC;
 
-    for(int z=0;z<8;z++)
-        {
-                if(tempRC[z] == '0')
-                    temp2RC.append("0000");
-                if(tempRC[z] == '1')
-                    temp2RC.append("0001");
-                if(tempRC[z] == '2')
-                    temp2RC.append("0010");
-                if(tempRC[z] == '3')
-                    temp2RC.append("0011");
-                if(tempRC[z] == '4')
-                    temp2RC.append("0100");
-                if(tempRC[z] == '5')
-                    temp2RC.append("0101");
-                if(tempRC[z] == '6')
-                    temp2RC.append("0110");
-                if(tempRC[z] == '7')
-                    temp2RC.append("0111");
-                if(tempRC[z] == '8')
-                    temp2RC.append("1000");
-                if(tempRC[z] == '9')
-                    temp2RC.append("1001");
-                if(tempRC[z] == 'A')
-                    temp2RC.append("1010");
-                if(tempRC[z] == 'B')
-                    temp2RC.append("1011");
-                if(tempRC[z] == 'C')
-                    temp2RC.append("1100");
-                if(tempRC[z] == 'D')
-                    temp2RC.append("1101");
-                if(tempRC[z] == 'E')
-                    temp2RC.append("1110");
-                if(tempRC[z] == 'F')
-                    temp2RC.append("1111");
-        }
+        for(int z=0;z<8;z++)
+            temp2RC.append(binToHex(tempRC,z));
+
 
         int addRC[32];
-
         for(int z=0;z<32;z++)
             addRC[z] = temp2RC[z] - '0';
 
@@ -316,6 +249,7 @@ int main()
     for(int z=0;z<32;z++)
         g[z] = ByteSubBin[z] ^ addRC[z];
 
+    /* Round Key 'roundNum' Calculation after above 3 steps */
     for(int z=0;z<32;z++)
         {
             w[i+4][z] = w[i][z] ^ g[z];
@@ -338,6 +272,8 @@ int main()
 
     }
 
+    /*Round Key Storage from Binary to Hex*/
+
     char roundKey[11][32];
     for(int z=1;z<11;z++)
     {
@@ -347,32 +283,14 @@ int main()
         for(i=0;i<128;i+=4,j++)
         {
             int temp = round[z][i]*8 + round[z][i+1]*4 + round[z][i+2]*2 + round[z][i+3]*1;
-
-            if(temp<=9)
-               roundKey[z][j] = temp + '0';
-
-            else
-            {
-                if(temp == 10)
-               roundKey[z][j] = 'A';
-                if(temp == 11)
-               roundKey[z][j] = 'B';
-                if(temp == 12)
-               roundKey[z][j] = 'C';
-                if(temp == 13)
-               roundKey[z][j] = 'D';
-                if(temp == 14)
-               roundKey[z][j] = 'E';
-                if(temp == 15)
-               roundKey[z][j] = 'F';
-
-            }
-
+            roundKey[z][j] = decToHex(temp);
         }
 
     }
 
+/*------------- CipherText Calculation Starts --------------*/
 
+    /*Creating Plain text and Key Matrix */
     string plaintext[4][4];
 
     int cnt = 0;
@@ -413,10 +331,8 @@ int main()
        }
     }
 
-
-
     string statemat[4][4];
-//Round 0 key addition
+    /*Round 0 key addition and storing in state matrix */
     for(i=0;i<4;i++)
     {
         for(j=0;j<4;j++)
@@ -437,11 +353,13 @@ int main()
             statemat[i][j] = result;
         }
     }
- //Byte Substitution for Round 1
+
+/*------------------ Encryption Starts Here --------------------*/
 
  int roundCnt = 1;
  while(roundCnt <11)
  {
+    /*Byte Substitution */
 
     for(i=0;i<4;i++)
     {
@@ -459,7 +377,6 @@ int main()
                tempA2[r] = temp[r+4] - '0';
             }
 
-
             rowNum = tempA1[0]*1000 + tempA1[1]*100 + tempA1[2]*10 + tempA1[3]*1;
             colNum = tempA2[0]*1000 + tempA2[1]*100 + tempA2[2]*10 + tempA2[3]*1;
 
@@ -470,47 +387,15 @@ int main()
             string temp2RC;
 
             for(int z=0;z<2;z++)
-                {
-                    if(tempRC[z] == '0')
-                        temp2RC.append("0000");
-                    if(tempRC[z] == '1')
-                        temp2RC.append("0001");
-                    if(tempRC[z] == '2')
-                        temp2RC.append("0010");
-                    if(tempRC[z] == '3')
-                        temp2RC.append("0011");
-                    if(tempRC[z] == '4')
-                        temp2RC.append("0100");
-                    if(tempRC[z] == '5')
-                        temp2RC.append("0101");
-                    if(tempRC[z] == '6')
-                        temp2RC.append("0110");
-                    if(tempRC[z] == '7')
-                        temp2RC.append("0111");
-                    if(tempRC[z] == '8')
-                        temp2RC.append("1000");
-                    if(tempRC[z] == '9')
-                        temp2RC.append("1001");
-                    if(tempRC[z] == 'A')
-                        temp2RC.append("1010");
-                    if(tempRC[z] == 'B')
-                        temp2RC.append("1011");
-                    if(tempRC[z] == 'C')
-                        temp2RC.append("1100");
-                    if(tempRC[z] == 'D')
-                        temp2RC.append("1101");
-                    if(tempRC[z] == 'E')
-                        temp2RC.append("1110");
-                    if(tempRC[z] == 'F')
-                        temp2RC.append("1111");
-                }
+                    temp2RC.append(binToHex(tempRC,z));
 
-                statemat[i][j] = temp2RC;
+            statemat[i][j] = temp2RC;
 
         }
 
     }
-    //Shift Rows
+
+    /*Shift Rows */
     string temp1 = statemat[1][0];
 
     statemat[1][0] = statemat[1][1];
@@ -531,319 +416,256 @@ int main()
     statemat[3][1] = statemat[3][0];
     statemat[3][0] = temp1;
 
-    //Mix Columns
+    /*Mix Columns*/
 
     if(roundCnt!=10)
-    {
-    int rowdec[16],coldec[16];
-    cnt = 0;
-    for(i=0;i<4;i++)
-    {
-        for(j=0;j<4;j++)
         {
-            int colNum=0,rowNum=0;
-            string temp = statemat[j][i];
-            int tempA1[4],tempA2[4];
-
-            for(int r=0;r<4;r++)
+        int rowdec[16],coldec[16];
+        cnt = 0;
+        for(i=0;i<4;i++)
+        {
+            for(j=0;j<4;j++)
             {
-               tempA1[r] = temp[r] - '0';
-               tempA2[r] = temp[r+4] - '0';
+                int colNum=0,rowNum=0;
+                string temp = statemat[j][i];
+                int tempA1[4],tempA2[4];
+
+                for(int r=0;r<4;r++)
+                {
+                   tempA1[r] = temp[r] - '0';
+                   tempA2[r] = temp[r+4] - '0';
+                }
+
+
+                rowNum = tempA1[0]*1000 + tempA1[1]*100 + tempA1[2]*10 + tempA1[3]*1;
+                colNum = tempA2[0]*1000 + tempA2[1]*100 + tempA2[2]*10 + tempA2[3]*1;
+
+                rowdec[cnt] = binToDec(rowNum);
+                coldec[cnt] = binToDec(colNum);
+                cnt++;
+
             }
-
-
-            rowNum = tempA1[0]*1000 + tempA1[1]*100 + tempA1[2]*10 + tempA1[3]*1;
-            colNum = tempA2[0]*1000 + tempA2[1]*100 + tempA2[2]*10 + tempA2[3]*1;
-
-            rowdec[cnt] = binToDec(rowNum);
-            coldec[cnt] = binToDec(colNum);
-            cnt++;
-
         }
-    }
 
-    string m2[16],m3[16]; // Char store of mul2 and mul3
+        string m2[16],m3[16]; // Char store of mul2 and mul3
 
-    for(int z=0;z<16;z++)
-    {
-        m2[z] = mul2[rowdec[z]][coldec[z]];
-        m3[z] = mul3[rowdec[z]][coldec[z]];
-    }
-
-   string m2bin[16],m3bin[16]; //Binary values of mul2 and mul3
-
-    for(int z=0;z<16;z++)
-    {
-       for(int t=0;t<2;t++)
+        for(int z=0;z<16;z++)
         {
-            if(m2[z][t] == '0')
-                m2bin[z].append("0000");
-            if(m2[z][t] == '1')
-                m2bin[z].append("0001");
-            if(m2[z][t] == '2')
-                m2bin[z].append("0010");
-            if(m2[z][t] == '3')
-                m2bin[z].append("0011");
-            if(m2[z][t] == '4')
-                m2bin[z].append("0100");
-            if(m2[z][t] == '5')
-                m2bin[z].append("0101");
-            if(m2[z][t] == '6')
-                m2bin[z].append("0110");
-            if(m2[z][t] == '7')
-                m2bin[z].append("0111");
-            if(m2[z][t] == '8')
-                m2bin[z].append("1000");
-            if(m2[z][t] == '9')
-                m2bin[z].append("1001");
-            if(m2[z][t] == 'A')
-                m2bin[z].append("1010");
-            if(m2[z][t] == 'B')
-                m2bin[z].append("1011");
-            if(m2[z][t] == 'C')
-                m2bin[z].append("1100");
-            if(m2[z][t] == 'D')
-                m2bin[z].append("1101");
-            if(m2[z][t] == 'E')
-                m2bin[z].append("1110");
-            if(m2[z][t] == 'F')
-                m2bin[z].append("1111");
-
+            m2[z] = mul2[rowdec[z]][coldec[z]];
+            m3[z] = mul3[rowdec[z]][coldec[z]];
         }
-    }
 
-    for(int z=0;z<16;z++)
-    {
-       for(int t=0;t<2;t++)
+        string m2bin[16],m3bin[16]; //Binary store of mul2 and mul3
+
+        for(int z=0;z<16;z++)
         {
-            if(m3[z][t] == '0')
-                m3bin[z].append("0000");
-            if(m3[z][t] == '1')
-                m3bin[z].append("0001");
-            if(m3[z][t] == '2')
-                m3bin[z].append("0010");
-            if(m3[z][t] == '3')
-                m3bin[z].append("0011");
-            if(m3[z][t] == '4')
-                m3bin[z].append("0100");
-            if(m3[z][t] == '5')
-                m3bin[z].append("0101");
-            if(m3[z][t] == '6')
-                m3bin[z].append("0110");
-            if(m3[z][t] == '7')
-                m3bin[z].append("0111");
-            if(m3[z][t] == '8')
-                m3bin[z].append("1000");
-            if(m3[z][t] == '9')
-                m3bin[z].append("1001");
-            if(m3[z][t] == 'A')
-                m3bin[z].append("1010");
-            if(m3[z][t] == 'B')
-                m3bin[z].append("1011");
-            if(m3[z][t] == 'C')
-                m3bin[z].append("1100");
-            if(m3[z][t] == 'D')
-                m3bin[z].append("1101");
-            if(m3[z][t] == 'E')
-                m3bin[z].append("1110");
-            if(m3[z][t] == 'F')
-                m3bin[z].append("1111");
+           for(int t=0;t<2;t++)
+                m2bin[z].append(binToHex(m2[z],t));
         }
-    }
 
-    int t1[8],t2[8],t3[8],t4[8];
-    int res[16][8];
-
-    for(int z=0;z<8;z++)   //Element 0
-    {
-        t1[z] = m2bin[0][z] - '0';
-        t2[z] = m3bin[1][z] - '0';
-        t3[z] = statemat[2][0][z] - '0';
-        t4[z] = statemat[3][0][z] - '0';
-
-        res[0][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-    for(int z=0;z<8;z++)  //Element 1
-    {
-        t1[z] = statemat[0][0][z] - '0';
-        t2[z] = m2bin[1][z] - '0';
-        t3[z] = m3bin[2][z] - '0';
-        t4[z] = statemat[3][0][z] - '0';
-
-        res[1][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-    for(int z=0;z<8;z++)  //E2
-    {
-        t1[z] = statemat[0][0][z] - '0';
-        t2[z] = statemat[1][0][z] - '0';
-        t3[z] = m2bin[2][z] - '0';
-        t4[z] = m3bin[3][z] - '0';
-
-        res[2][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-     for(int z=0;z<8;z++)  //E3
-    {
-        t1[z] = m3bin[0][z] - '0';
-        t2[z] = statemat[1][0][z] - '0';
-        t3[z] = statemat[2][0][z] - '0';
-        t4[z] = m2bin[3][z] - '0';
-
-        res[3][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-
-
-    //Ele 4 to 7
-    for(int z=0;z<8;z++)   //Element 4
-    {
-        t1[z] = m2bin[4][z] - '0';
-        t2[z] = m3bin[5][z] - '0';
-        t3[z] = statemat[2][1][z] - '0';
-        t4[z] = statemat[3][1][z] - '0';
-
-        res[4][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-    for(int z=0;z<8;z++)  //Element 5
-    {
-        t1[z] = statemat[0][1][z] - '0';
-        t2[z] = m2bin[5][z] - '0';
-        t3[z] = m3bin[6][z] - '0';
-        t4[z] = statemat[3][1][z] - '0';
-
-        res[5][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-    for(int z=0;z<8;z++)  //E6
-    {
-        t1[z] = statemat[0][1][z] - '0';
-        t2[z] = statemat[1][1][z] - '0';
-        t3[z] = m2bin[6][z] - '0';
-        t4[z] = m3bin[7][z] - '0';
-
-        res[6][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-     for(int z=0;z<8;z++)  //E7
-    {
-        t1[z] = m3bin[4][z] - '0';
-        t2[z] = statemat[1][1][z] - '0';
-        t3[z] = statemat[2][1][z] - '0';
-        t4[z] = m2bin[7][z] - '0';
-
-        res[7][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-
-    //Ele 8-11
-
-    for(int z=0;z<8;z++)   //Element 8
-    {
-        t1[z] = m2bin[8][z] - '0';
-        t2[z] = m3bin[9][z] - '0';
-        t3[z] = statemat[2][2][z] - '0';
-        t4[z] = statemat[3][2][z] - '0';
-
-        res[8][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-    for(int z=0;z<8;z++)  //Element 9
-    {
-        t1[z] = statemat[0][2][z] - '0';
-        t2[z] = m2bin[9][z] - '0';
-        t3[z] = m3bin[10][z] - '0';
-        t4[z] = statemat[3][2][z] - '0';
-
-        res[9][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-    for(int z=0;z<8;z++)  //E10
-    {
-        t1[z] = statemat[0][2][z] - '0';
-        t2[z] = statemat[1][2][z] - '0';
-        t3[z] = m2bin[10][z] - '0';
-        t4[z] = m3bin[11][z] - '0';
-
-        res[10][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-     for(int z=0;z<8;z++)  //E11
-    {
-        t1[z] = m3bin[8][z] - '0';
-        t2[z] = statemat[1][2][z] - '0';
-        t3[z] = statemat[2][2][z] - '0';
-        t4[z] = m2bin[11][z] - '0';
-
-        res[11][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-    //ELe 12-15
-
-    for(int z=0;z<8;z++)   //Element 12
-    {
-        t1[z] = m2bin[12][z] - '0';
-        t2[z] = m3bin[13][z] - '0';
-        t3[z] = statemat[2][3][z] - '0';
-        t4[z] = statemat[3][3][z] - '0';
-
-        res[12][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-    for(int z=0;z<8;z++)  //Element 13
-    {
-        t1[z] = statemat[0][3][z] - '0';
-        t2[z] = m2bin[13][z] - '0';
-        t3[z] = m3bin[14][z] - '0';
-        t4[z] = statemat[3][3][z] - '0';
-
-        res[13][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-    for(int z=0;z<8;z++)  //E14
-    {
-        t1[z] = statemat[0][3][z] - '0';
-        t2[z] = statemat[1][3][z] - '0';
-        t3[z] = m2bin[14][z] - '0';
-        t4[z] = m3bin[15][z] - '0';
-
-        res[14][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-     for(int z=0;z<8;z++)  //E15
-    {
-        t1[z] = m3bin[12][z] - '0';
-        t2[z] = statemat[1][3][z] - '0';
-        t3[z] = statemat[2][3][z] - '0';
-        t4[z] = m2bin[15][z] - '0';
-
-        res[15][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
-    }
-
-    string tempres[16];
-
-    for(int t=0;t<16;t++)
-    {
-        for(int z=0;z<8;z++)
-            tempres[t].push_back(res[t][z] + '0');
-
-    }
-
-    cnt =0;
-    for(int p=0;p<4;p++)
-    {
-        for(int q=0;q<4;q++)
+        for(int z=0;z<16;z++)
         {
-            statemat[q][p] = tempres[cnt];
-            cnt++;
+           for(int t=0;t<2;t++)
+                m3bin[z].append(binToHex(m3[z],t));
+
+
+        }
+
+        int t1[8],t2[8],t3[8],t4[8];
+        int res[16][8];
+
+
+
+        for(int z=0;z<8;z++)   //Element 0
+        {
+            t1[z] = m2bin[0][z] - '0';
+            t2[z] = m3bin[1][z] - '0';
+            t3[z] = statemat[2][0][z] - '0';
+            t4[z] = statemat[3][0][z] - '0';
+
+            res[0][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+        for(int z=0;z<8;z++)  //Element 1
+        {
+            t1[z] = statemat[0][0][z] - '0';
+            t2[z] = m2bin[1][z] - '0';
+            t3[z] = m3bin[2][z] - '0';
+            t4[z] = statemat[3][0][z] - '0';
+
+            res[1][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+        for(int z=0;z<8;z++)  //Element 2
+        {
+            t1[z] = statemat[0][0][z] - '0';
+            t2[z] = statemat[1][0][z] - '0';
+            t3[z] = m2bin[2][z] - '0';
+            t4[z] = m3bin[3][z] - '0';
+
+            res[2][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+         for(int z=0;z<8;z++)  //Element 3
+        {
+            t1[z] = m3bin[0][z] - '0';
+            t2[z] = statemat[1][0][z] - '0';
+            t3[z] = statemat[2][0][z] - '0';
+            t4[z] = m2bin[3][z] - '0';
+
+            res[3][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+
+
+        //Element 4 to 7
+        for(int z=0;z<8;z++)   //Element 4
+        {
+            t1[z] = m2bin[4][z] - '0';
+            t2[z] = m3bin[5][z] - '0';
+            t3[z] = statemat[2][1][z] - '0';
+            t4[z] = statemat[3][1][z] - '0';
+
+            res[4][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+        for(int z=0;z<8;z++)  //Element 5
+        {
+            t1[z] = statemat[0][1][z] - '0';
+            t2[z] = m2bin[5][z] - '0';
+            t3[z] = m3bin[6][z] - '0';
+            t4[z] = statemat[3][1][z] - '0';
+
+            res[5][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+        for(int z=0;z<8;z++)  //Element 6
+        {
+            t1[z] = statemat[0][1][z] - '0';
+            t2[z] = statemat[1][1][z] - '0';
+            t3[z] = m2bin[6][z] - '0';
+            t4[z] = m3bin[7][z] - '0';
+
+            res[6][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+         for(int z=0;z<8;z++)  //Element 7
+        {
+            t1[z] = m3bin[4][z] - '0';
+            t2[z] = statemat[1][1][z] - '0';
+            t3[z] = statemat[2][1][z] - '0';
+            t4[z] = m2bin[7][z] - '0';
+
+            res[7][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+
+        //Element 8-11
+
+        for(int z=0;z<8;z++)   //Element 8
+        {
+            t1[z] = m2bin[8][z] - '0';
+            t2[z] = m3bin[9][z] - '0';
+            t3[z] = statemat[2][2][z] - '0';
+            t4[z] = statemat[3][2][z] - '0';
+
+            res[8][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+        for(int z=0;z<8;z++)  //Element 9
+        {
+            t1[z] = statemat[0][2][z] - '0';
+            t2[z] = m2bin[9][z] - '0';
+            t3[z] = m3bin[10][z] - '0';
+            t4[z] = statemat[3][2][z] - '0';
+
+            res[9][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+        for(int z=0;z<8;z++)  //Element 10
+        {
+            t1[z] = statemat[0][2][z] - '0';
+            t2[z] = statemat[1][2][z] - '0';
+            t3[z] = m2bin[10][z] - '0';
+            t4[z] = m3bin[11][z] - '0';
+
+            res[10][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+         for(int z=0;z<8;z++)  //Element 11
+        {
+            t1[z] = m3bin[8][z] - '0';
+            t2[z] = statemat[1][2][z] - '0';
+            t3[z] = statemat[2][2][z] - '0';
+            t4[z] = m2bin[11][z] - '0';
+
+            res[11][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+        //Element 12-15
+
+        for(int z=0;z<8;z++)   //Element 12
+        {
+            t1[z] = m2bin[12][z] - '0';
+            t2[z] = m3bin[13][z] - '0';
+            t3[z] = statemat[2][3][z] - '0';
+            t4[z] = statemat[3][3][z] - '0';
+
+            res[12][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+        for(int z=0;z<8;z++)  //Element 13
+        {
+            t1[z] = statemat[0][3][z] - '0';
+            t2[z] = m2bin[13][z] - '0';
+            t3[z] = m3bin[14][z] - '0';
+            t4[z] = statemat[3][3][z] - '0';
+
+            res[13][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+        for(int z=0;z<8;z++)  //Element 14
+        {
+            t1[z] = statemat[0][3][z] - '0';
+            t2[z] = statemat[1][3][z] - '0';
+            t3[z] = m2bin[14][z] - '0';
+            t4[z] = m3bin[15][z] - '0';
+
+            res[14][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+         for(int z=0;z<8;z++)  //Element 15
+        {
+            t1[z] = m3bin[12][z] - '0';
+            t2[z] = statemat[1][3][z] - '0';
+            t3[z] = statemat[2][3][z] - '0';
+            t4[z] = m2bin[15][z] - '0';
+
+            res[15][z] = t1[z] ^ t2[z] ^ t3[z] ^ t4[z] ;
+        }
+
+        string tempres[16];
+
+        for(int t=0;t<16;t++)
+        {
+            for(int z=0;z<8;z++)
+                tempres[t].push_back(res[t][z] + '0');
+
+        }
+
+        cnt =0;
+        for(int p=0;p<4;p++)
+        {
+            for(int q=0;q<4;q++)
+            {
+                statemat[q][p] = tempres[cnt];
+                cnt++;
+            }
         }
     }
-    }
-    //Add Round KEY
 
 
+    /*Round KEY Addition*/
     cnt = 0;
     for(i=0;i<4;i++)
     {
@@ -851,11 +673,8 @@ int main()
         {
             string temp ;
             for(int z=0;z<8;z++)
-                {
-                    temp.push_back(round[roundCnt][cnt+z] + '0');  
+                temp.push_back(round[roundCnt][cnt+z] + '0');
 
-                }
-               
             cnt+=8;
             key[j][i] = temp;
 
@@ -883,53 +702,27 @@ int main()
         }
     }
 
-
         roundCnt++;
-
 }
 
-
-
     string ciphertext;
-    int p=0,q=0;
+
     for(int p=0;p<4;p++)
     {
         for(int q=0;q<4;q++)
         {
-            int i=0;            
+            int i=0;
 
             for(i=0;i<8;i+=4)
             {
                 int temp = (statemat[q][p][i]-'0')*8 + (statemat[q][p][i+1]-'0')*4 +(statemat[q][p][i+2]-'0')*2 + (statemat[q][p][i+3]-'0')*1;
-
-
-                if(temp<=9)
-                   ciphertext.push_back(temp + '0');
-
-                else
-                {
-                    if(temp == 10)
-                   ciphertext.push_back('A');
-                    if(temp == 11)
-                   ciphertext.push_back('B');
-                    if(temp == 12)
-                   ciphertext.push_back('C');
-                    if(temp == 13)
-                   ciphertext.push_back('D');
-                    if(temp == 14)
-                   ciphertext.push_back('E');
-                    if(temp == 15)
-                   ciphertext.push_back('F');
-
-                }
-
+                ciphertext.push_back(decToHex(temp));
             }
-
-
         }
     }
 
 
+    /* Final Expanded Keys */
     for(int z=1;z<11;z++)
     {
         for(int p=0;p<32;p++)
@@ -938,10 +731,8 @@ int main()
         cout << endl;
 
     }
-
-
+    /* Final Cipher Text*/
     cout << ciphertext;
-
 
     return 0;
 }
