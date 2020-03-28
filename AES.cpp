@@ -3,65 +3,7 @@
 
 using namespace std;
 
-string binToHex(string A,int i)
-{
-        if(A[i] == '0')
-            return ("0000");
-        if(A[i] == '1')
-            return ("0001");
-        if(A[i] == '2')
-            return ("0010");
-        if(A[i] == '3')
-            return ("0011");
-        if(A[i] == '4')
-            return ("0100");
-        if(A[i] == '5')
-            return ("0101");
-        if(A[i] == '6')
-            return ("0110");
-        if(A[i] == '7')
-            return ("0111");
-        if(A[i] == '8')
-            return ("1000");
-        if(A[i] == '9')
-            return ("1001");
-        if(A[i] == 'A')
-            return ("1010");
-        if(A[i] == 'B')
-            return ("1011");
-        if(A[i] == 'C')
-            return ("1100");
-        if(A[i] == 'D')
-            return ("1101");
-        if(A[i] == 'E')
-            return ("1110");
-        if(A[i] == 'F')
-            return ("1111");
 
-}
-
-const char decToHex(int temp)
-{
-    if(temp<=9)
-        return (temp + '0');
-
-
-    else
-    {
-        if(temp == 10)
-            return 'A';
-        if(temp == 11)
-            return 'B';
-        if(temp == 12)
-            return  'C';
-        if(temp == 13)
-            return 'D';
-        if(temp == 14)
-            return 'E';
-        if(temp == 15)
-            return 'F';
-    }
-}
 const char* mul2[16][16] =
 {
 	 "00", "02", "04", "06", "08", "0A", "0C", "0E", "10", "12", "14", "16", "18", "1A", "1C", "1E",
@@ -125,6 +67,66 @@ const char* S_Box[16][16] = {
 };
 const char* Rcon[10] = {"01000000", "02000000", "04000000", "08000000", "10000000",
                  "20000000", "40000000", "80000000", "1B000000", "36000000"};
+
+string binToHex(string A,int i)
+{
+        if(A[i] == '0')
+            return ("0000");
+        if(A[i] == '1')
+            return ("0001");
+        if(A[i] == '2')
+            return ("0010");
+        if(A[i] == '3')
+            return ("0011");
+        if(A[i] == '4')
+            return ("0100");
+        if(A[i] == '5')
+            return ("0101");
+        if(A[i] == '6')
+            return ("0110");
+        if(A[i] == '7')
+            return ("0111");
+        if(A[i] == '8')
+            return ("1000");
+        if(A[i] == '9')
+            return ("1001");
+        if(A[i] == 'A')
+            return ("1010");
+        if(A[i] == 'B')
+            return ("1011");
+        if(A[i] == 'C')
+            return ("1100");
+        if(A[i] == 'D')
+            return ("1101");
+        if(A[i] == 'E')
+            return ("1110");
+        if(A[i] == 'F')
+            return ("1111");
+
+}
+
+const char decToHex(int temp)
+{
+    if(temp<=9)
+        return (temp + '0');
+
+
+    else
+    {
+        if(temp == 10)
+            return 'A';
+        if(temp == 11)
+            return 'B';
+        if(temp == 12)
+            return  'C';
+        if(temp == 13)
+            return 'D';
+        if(temp == 14)
+            return 'E';
+        if(temp == 15)
+            return 'F';
+    }
+} 
 
 int binToDec(int n)
 {
