@@ -1,0 +1,68 @@
+Ques-1) AES:
+Given a plaintext and key for AES encryption, output the 10 round keys used in the encryption process. Also output the result of the encypted ciphertext after 10 rounds. As the AES has 10 rounds, the size of the plaintext and key both is 128bits. You can find the Substitute byte and round constant tables here
+
+Input:
+(All hexadecimal letters are capital)
+
+First line will contain a string which is the plaintext. (All hexadecimal letters are capital)
+The line also has a string which is the key. The keys for the next 10 rounds will be generated from this key.
+Output:
+Output 10 strings that are the Round Keys of round 1 to 10. Output the ciphertext.
+
+Constraints
+128bit plaintext and key.
+Sample Input:
+54776F204F6E65204E696E652054776F
+5468617473206D79204B756E67204675
+Sample Output:
+E232FCF191129188B159E4E6D679A293
+56082007C71AB18F76435569A03AF7FA
+D2600DE7157ABC686339E901C3031EFB
+A11202C9B468BEA1D75157A01452495B
+B1293B3305418592D210D232C6429B69
+BD3DC287B87C47156A6C9527AC2E0E4E
+CC96ED1674EAAA031E863F24B2A8316A
+8E51EF21FABB4522E43D7A0656954B6C
+BFE2BF904559FAB2A16480B4F7F1CBD8
+28FDDEF86DA4244ACCC0A4FE3B316F26
+29C3505F571420F6402299B31A02D73A
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Ques-2) Galois Field:
+
+You have to perform mathematical calcuations in the given Galois Field.
+
+The input given is f(x) and g(x), which are 2 polynomials, also m(x) which is an irreducible polynomial for that particular field. You have to calculate f(x)*g(x)mod(m(x)).
+
+Input:
+First line has f(x) in binary format.Alt text Second line has g(x) in binary format. Third line has m(x) in binary format.
+Output:
+Output f(x)*g(x)mod(m(x)) in binary format. Output 0 for zero polynomial.
+Constraints
+For Galois Fields, GF(2n), n<=8. Degree of polynomials <= 10.
+Sample Input:
+10111011
+1011
+100011101
+Sample Output:
+1100001
+
+Ques-3) XOR Encryption:
+
+You are given an encryption algorithm in which the plain text is encrypted by XORing the plaintext N times where N is the length of the string. The catch here is that every time we XOR the string, we shift it to the right. The string is in hexadecimal.
+
+Your task is given the encrypted text, find the original plain text.
+
+Input:
+First line containts the encrypted text.
+Output:
+You have to output the plaintext.
+Constraints
+Length of String <= 106
+Sample Input:
+a1d0a1d
+Sample Output:
+abcd
+
