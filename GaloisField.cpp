@@ -1,3 +1,30 @@
+/********* Question ***********/
+
+/*
+You have to perform mathematical calcuations in the given Galois Field.
+The input given is f(x) and g(x), which are 2 polynomials, also m(x) which is an irreducible polynomial for that particular field. You have to calculate f(x)*g(x)mod(m(x)).
+
+Input:
+First line has f(x) in binary format.Alt text Second line has g(x) in binary format. Third line has m(x) in binary format.
+
+Output:
+Output f(x)*g(x)mod(m(x)) in binary format. Output 0 for zero polynomial.
+
+Constraints
+For Galois Fields, GF(2n), n<=8. Degree of polynomials <= 10.
+
+Sample Input:
+10111011
+1011
+100011101
+
+Sample Output:
+1100001
+
+*/
+
+/**********Solution**********/
+
 #include <iostream>
 #include<bits/stdc++.h>
 
@@ -61,19 +88,18 @@ int main()
             k--;
         }
 
-    /*for(i=0;i<25;i++)
-        cout << v2[i];*/
 
     int shift = 0;
+    
+/*--------- Multiplying polynomial 1 and polynomial 2 and storing result in mul------------ */
 
-    //k = 18;
     for(k=24;k>=0;k--)
     {
         int temp[25];
 
         if(v2[k] == 1)
         {
-            //cout << k;
+            
             for(int z=0;z<25;z++)
                 temp[z] = v1[z];
 
@@ -96,12 +122,10 @@ int main()
 
     }
 
-
+/*-----------Calulating Modulo of above multiplication in m(x) -------------*/
+    
     int mulpow = highestPow(mul);
-
-    int modpow = highestPow(v);
-
-   // cout << mulpow << " " << modpow;
+    int modpow = highestPow(v); 
 
     while(mulpow <= modpow)   //If Mul power is more than equal to mod power, reduction has to occur
     {
@@ -122,28 +146,21 @@ int main()
             diff--;
         }
 
-        /*for(int z=0;z<25;z++)
-            cout << temp[z];*/
-
         for(int z = 0;z<25;z++)
             mul[z] = mul[z] ^ temp[z];
 
         mulpow = highestPow(mul);
 
     }
-
-
-
-    //cout << mulpow;
-
+    
+/*----------Result----------*/
+    
     int res[25-mulpow];
-
     k=0;
 
     for(i = mulpow;i<25;i++)
     {
         res[k] = mul[i];
-
         k++;
     }
 
