@@ -104,7 +104,7 @@ const char* S_Box[16][16] = {
 const char* Rcon[10] = {"01000000", "02000000", "04000000", "08000000", "10000000",
                  "20000000", "40000000", "80000000", "1B000000", "36000000"};
 
-string binToHex(string A,int i)
+string hexToBin(string A,int i)
 {
         if(A[i] == '0')
             return ("0000");
@@ -141,7 +141,7 @@ string binToHex(string A,int i)
 
 }
 
-const char decToHex(int temp)
+const char binToHex(int temp)
 {
     if(temp<=9)
         return (temp + '0');
@@ -162,7 +162,7 @@ const char decToHex(int temp)
         if(temp == 15)
             return 'F';
     }
-} 
+}
 
 int binToDec(int n)
 {
@@ -200,10 +200,10 @@ int main()
     /* Change input key, input plaintext from hex to binary*/
 
     for(i=0;i<32;i++)
-        bin_key.append(binToHex(input_key,i));
+        bin_key.append(hexToBin(input_key,i));
 
     for(i=0;i<32;i++)
-        bin_pt.append(binToHex(input_pt,i));
+        bin_pt.append(hexToBin(input_pt,i));
 
     int w[44][32];
     int round[11][128];
@@ -262,7 +262,7 @@ int main()
             string tempByte = S_Box[rowdec][coldec];
 
             for(int z = 0; z <2; z++)
-                ByteSub.append(binToHex(tempByte,z));
+                ByteSub.append(hexToBin(tempByte,z));
 
 
         }
@@ -275,7 +275,7 @@ int main()
     string temp2RC;
 
         for(int z=0;z<8;z++)
-            temp2RC.append(binToHex(tempRC,z));
+            temp2RC.append(hexToBin(tempRC,z));
 
 
         int addRC[32];
@@ -321,7 +321,7 @@ int main()
         for(i=0;i<128;i+=4,j++)
         {
             int temp = round[z][i]*8 + round[z][i+1]*4 + round[z][i+2]*2 + round[z][i+3]*1;
-            roundKey[z][j] = decToHex(temp);
+            roundKey[z][j] = binToHex(temp);
         }
 
     }
@@ -370,7 +370,7 @@ int main()
     }
 
     string statemat[4][4];
-	
+
     /*Round 0 key addition and storing in state matrix */
     for(i=0;i<4;i++)
     {
@@ -426,7 +426,7 @@ int main()
             string temp2RC;
 
             for(int z=0;z<2;z++)
-                    temp2RC.append(binToHex(tempRC,z));
+                    temp2RC.append(hexToBin(tempRC,z));
 
             statemat[i][j] = temp2RC;
 
@@ -499,13 +499,13 @@ int main()
         for(int z=0;z<16;z++)
         {
            for(int t=0;t<2;t++)
-                m2bin[z].append(binToHex(m2[z],t));
+                m2bin[z].append(hexToBin(m2[z],t));
         }
 
         for(int z=0;z<16;z++)
         {
            for(int t=0;t<2;t++)
-                m3bin[z].append(binToHex(m3[z],t));
+                m3bin[z].append(hexToBin(m3[z],t));
 
 
         }
@@ -747,13 +747,13 @@ int main()
             for(i=0;i<8;i+=4)
             {
                 int temp = (statemat[q][p][i]-'0')*8 + (statemat[q][p][i+1]-'0')*4 +(statemat[q][p][i+2]-'0')*2 + (statemat[q][p][i+3]-'0')*1;
-                ciphertext.push_back(decToHex(temp));
+                ciphertext.push_back(binToHex(temp));
             }
         }
     }
 
 /*----------------Result----------------*/
-	
+
     /* Final Expanded Keys */
     for(int z=1;z<11;z++)
     {
