@@ -24,6 +24,7 @@ Sample Output:
 */
 
 /**********Solution**********/
+/**** Author: SHIKHAR TAYAL (ID:2017A7PS1392H)****/
 
 #include <iostream>
 #include<bits/stdc++.h>
